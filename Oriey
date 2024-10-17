@@ -1,0 +1,49 @@
+public class ProductSearch {
+
+    public static int findProductIndex(int[] productIDs, int targetID) {
+        int low = 0;
+        int high = productIDs.length - 1;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+
+            
+            if (productIDs[mid] == targetID) {
+                return mid;
+            }
+
+            // Determine if the left side is sorted
+            if (productIDs[low] <= productIDs[mid]) {
+                // Target is in the left part
+                if (productIDs[low] <= targetID && targetID < productIDs[mid]) {
+                    high = mid - 1;
+                } else {
+                    low = mid + 1;
+                }
+            }
+            // Otherwise, the right side must be sorted
+            else {
+                // Target is in the right part
+                if (productIDs[mid] < targetID && targetID <= productIDs[high]) {
+                    low = mid + 1;
+                } else {
+                    high = mid - 1;
+                }
+            }
+        }
+
+        // If not found, return -1
+        return -1;
+    }
+
+    public static void main(String[] args) {
+        int[] productIDs = {104, 105, 106, 107, 101, 102, 103};
+        int targetID = 102;
+
+        int result = findProductIndex(productIDs, targetID);
+        if (result != -1) {
+            System.out.println("Product found at index: " + result);
+        } else {
+            System.out.println("Product not found.");
+        }
+    }
